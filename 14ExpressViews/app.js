@@ -1,19 +1,22 @@
 var express = require('express'),
     app = express(),
+
     home = require('./routes/home'),
     contacts = require('./routes/concats')
     ;
 
-app.configure('production', function () {
-    app.set('text', 'production text');
-});
 
-app.configure('development', function () {
-    app.set('text', 'dev text');
-});
+app.use(express.static('public'));
+app.set('views', './views');
+
+var handlebars = require('express-handlebars');
+app.engine('.hbs', handlebars({extname: '.hbs'}));
+
+app.set('view engine', '.hbs');
+
 
 app.get('/', function (req, res) {
-    res.send(app.get('text'));
+    res.render('index', {data: 'some data'});
 });
 
 
